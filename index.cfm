@@ -10,14 +10,6 @@
 </head>
 <body>
     <cfinclude   template="./templates/header.cfm">
-
- 
-<!---  <cfif CGI.SCRIPT_NAME eq '/login.cfm' >  --->
-    <cfinclude  template="./login.cfm">
-<!---  </cfif>  --->
-<!---  <cfif CGI.SCRIPT_NAME eq '/home.cfm' >  --->
-<!---     <cfinclude  template="./home.cfm"> --->
-<!---  </cfif>  --->
-
+    <h1 class="text-center mt-7">Home Page</h1>
 </body>
 </html>
