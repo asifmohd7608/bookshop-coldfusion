@@ -3119,7 +3119,7 @@ input[type=button].btn-block {
 .dropdown-item:hover, .dropdown-item:focus {
   color: #16181b;
   text-decoration: none;
-  background-color: #e9ecef;
+  background-color: #6c757d;
 }
 .dropdown-item.active, .dropdown-item:active {
   color: #fff;
@@ -7304,8 +7304,36 @@ button.bg-softgray:focus {
   width: 100% !important;
 }
 
+.w-2 {
+  width: 2rem !important;
+}
+
+.w-3 {
+  width: 3rem !important;
+}
+
+.w-4 {
+  width: 4rem !important;
+}
+
 .w-5 {
   width: 5rem !important;
+}
+
+.w-6 {
+  width: 6rem !important;
+}
+
+.w-7 {
+  width: 7rem !important;
+}
+
+.w-8 {
+  width: 8rem !important;
+}
+
+.w-9 {
+  width: 9rem !important;
 }
 
 .w-10 {
@@ -7332,8 +7360,36 @@ button.bg-softgray:focus {
   height: 100% !important;
 }
 
+.h-2 {
+  height: 2rem !important;
+}
+
+.h-3 {
+  height: 3rem !important;
+}
+
+.h-4 {
+  height: 4rem !important;
+}
+
 .h-5 {
   height: 5rem !important;
+}
+
+.h-6 {
+  height: 6rem !important;
+}
+
+.h-7 {
+  height: 7rem !important;
+}
+
+.h-8 {
+  height: 8rem !important;
+}
+
+.h-9 {
+  height: 9rem !important;
 }
 
 .h-10 {

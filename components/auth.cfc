@@ -3,19 +3,19 @@
     <cffunction  name="loginuser" >
         <cfargument  name="form" type="struct" required="true">
         <cftry>
-        <cfdump  var="#form#">
             <cfquery name='loginuser' datasource="cfbookshop">
                 select * from users
                 where users.Email = <cfqueryparam value='#form.username#' CFSQLType="CF_SQL_LONGNVARCHAR"> 
             </cfquery>
             <cfif len(loginuser) gt 0>
-                <cfif loginuser.Email[1] eq form.username AND loginuser.Password eq form.password>
+                <cfif loginuser.Email[1] eq form.username AND loginuser.Password[1] eq form.password>
+                    <cfset session.user = loginuser>
                     <cflocation  url="../user/books.cfm">
                 <cfelse>
-                    <cflocation  url="../user/login.cfm?errormsg=#urlEncodedFormat('Username or Password is incorrect')#">
+                    <cflocation  url="../user/login.cfm?errormsg=Username or Password is incorrect">
                 </cfif>
             <cfelse>
-            <cflocation  url="../user/login.cfm?errormsg=#urlEncodedFormat('Account doesnt exist')#" addToken="false">
+            <cflocation  url="../user/login.cfm?errormsg=Account doesnt exist" addToken="false">
             </cfif> 
 
 
@@ -63,6 +63,18 @@
                 </cftry>
                 
             </cfif>
+        </cfif>
+    </cffunction>
+
+
+<!---     -------------------------logout user ------------------ --->
+
+    <cffunction  name="logoutuser">
+        <cfif structKeyExists(session, 'user')>
+            <cfset structDelete(session, 'user')>
+            <cflocation  url="../user/login.cfm">
+        <cfelse>
+            <cflocation  url="../user/books.cfm">
         </cfif>
     </cffunction>
 </cfcomponent>

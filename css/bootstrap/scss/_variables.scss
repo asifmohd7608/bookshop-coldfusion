@@ -174,7 +174,14 @@ $sizes: map-merge(
     50: 50%,
     75: 75%,
     100: 100%,
+    2: 2rem,
+    3: 3rem,
+    4: 4rem,
     5: 5rem,
+    6: 6rem,
+    7: 7rem,
+    8: 8rem,
+    9: 9rem,
     10: 10rem,
     auto: auto,
   ),
@@ -788,7 +795,7 @@ $dropdown-box-shadow: 0 0.5rem 1rem rgba($black, 0.175) !default;
 
 $dropdown-link-color: $gray-900 !default;
 $dropdown-link-hover-color: darken($gray-900, 5%) !default;
-$dropdown-link-hover-bg: $gray-200 !default;
+$dropdown-link-hover-bg: $gray-600 !default;
 
 $dropdown-link-active-color: $component-active-color !default;
 $dropdown-link-active-bg: $component-active-bg !default;
