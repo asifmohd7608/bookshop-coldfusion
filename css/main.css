@@ -2870,6 +2870,13 @@ fieldset:disabled a.btn {
   border-radius: 0.2rem;
 }
 
+.btn-xs {
+  padding: 0.1rem 0.1rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  border-radius: 0.2rem;
+}
+
 .btn-block {
   display: block;
   width: 100%;
@@ -2950,7 +2957,7 @@ input[type=button].btn-block {
   position: absolute;
   top: 100%;
   left: 0;
-  z-index: 1000;
+  z-index: 1020;
   display: none;
   float: left;
   min-width: 10rem;
@@ -7404,8 +7411,16 @@ button.bg-softgray:focus {
   max-width: 100% !important;
 }
 
+.mw-fit {
+  max-width: fit-content !important;
+}
+
 .mh-100 {
   max-height: 100% !important;
+}
+
+.mh-fit {
+  max-height: fit-content !important;
 }
 
 .min-w-50 {
@@ -11069,6 +11084,13 @@ a.text-softgray:hover, a.text-softgray:focus {
     color: inherit;
     border-color: #dee2e6;
   }
+}
+.top-4 {
+  top: 3.5rem;
+}
+
+.z-high {
+  z-index: 1021;
 }
 
 /*# sourceMappingURL=main.css.map */
