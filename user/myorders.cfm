@@ -15,7 +15,7 @@
 
     <div class="container">
         <h2 class="text-center my-3 h2 font-weight-bold text-softgray">My Orders</h2>
-        <div class="d-none d-lg-flex mx-1 p-3 my-4 top-4 rounded-md shadow-md text-center row  flex-nowrap sticky-top bg-white" id="labels">
+        <div class="d-none d-md-flex mx-1 p-3 my-4 top-4 rounded-md shadow-md text-center row  flex-nowrap sticky-top bg-white" id="labels">
                 <div class="col-md-1">Cover</div>
                 <div class="col-md-3">Title</div>
                 <div class="col">Unit Price</div>
@@ -29,7 +29,7 @@
                 <div class="card mb-3  p-3 rounded-md shadow-md text-center" >
                     <div class="row no-gutters align-items-baseline">
                         <div class="col-md-1">
-                            <img src="../media/#orders.File_Path#" alt="book cover" style="object-fit:cover" class="img-fluid w-5 h-8 rounded-md">
+                            <img src="../media/#orders.File_Path#" alt="book cover" style="object-fit:cover" class="img-fluid w-5 h-8 border rounded-md">
                         </div>
                         <div class="col-md-3">
                             <div class="card-body">
@@ -37,17 +37,24 @@
                             </div>
                         </div>
                         <div class="col">
-                            <div class="row align-items-baseline text-center ">
-                                <div class="col-12 col-sm-4 col-md-2">Rs #orders.Price#</div>
-                                <div class="col-12 col-sm-4 col-md-2 d-flex justify-content-center">
-                                    #orders.Purchase_Count#
+                            <div class="row align-items-baseline text-center col-8 col-md-12 mx-auto ">
+                                <div class="col-12  col-md-2 d-flex justify-content-center">
+                                    <span class="d-inline d-md-none">Unit Price : </span>Rs #orders.Price#
                                 </div>
-                                <div class="col-12 col-sm-4 col-md-2">
-                                    #orders.Price * orders.Purchase_Count#
+                                <div class="col-12  col-md-2 d-flex justify-content-center">
+                                    <span class="d-inline d-md-none">Quantity : </span>#orders.Purchase_Count#
                                 </div>
-                                <div class="col-12 col-sm-4 col-md-2">Discount</div>
-                                <div class="col-12 col-sm-4 col-md-2" >#orders.Subtotal#</div>
-                                <btn class="col-12 col-sm-4 col-md-2">#dateFormat(orders.createdAt,'ddd-mm-yyyy')#</btn>
+                                <div class="col-12  col-md-2 d-flex justify-content-center">
+                                    <span class="d-inline d-md-none">Total : </span>#orders.Price * orders.Purchase_Count#
+                                </div>
+                                <div class="col-12  col-md-2 d-flex justify-content-center">
+                                    <span class="d-inline d-md-none">Discount : </span>#orders.Discount_Amount#
+                                </div>
+                                <div class="col-12  col-md-2 d-flex justify-content-center" >
+                                    <span class="d-inline d-md-none">Sub Total : </span>#orders.Subtotal#</div>
+                                <div class="col-12  col-md-2 d-flex justify-content-center">
+                                    <span class="d-inline d-md-none">Date : </span>#dateFormat(orders.createdAt,'dd/mm/yy')#
+                                </div>
                             </div>
                         </div>
                     </div>

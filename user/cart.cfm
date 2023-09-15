@@ -12,7 +12,7 @@
     <cfinclude   template="../templates/header.cfm">
     <cfoutput>
 
-    <div class="container">
+    <div class=" mx-4">
 
         <h2 class="text-center my-3 h2 font-weight-bold text-softgray">CART</h2>
 
@@ -28,14 +28,14 @@
         </cfif>
     <!--- ---------------------------------------------- --->
         <cfif structKeyExists(session, 'cart') AND structCount(session.cart) gt 0>
-            <div class="d-none d-lg-flex mx-1 p-3 my-4 rounded-md shadow-md text-center row  flex-nowrap sticky-top bg-white top-4" id="labels">
+            <div class="d-none d-md-flex  p-3 my-4 rounded-md shadow-md text-center row  flex-nowrap sticky-top bg-white top-4" id="labels">
                 <div class="col-md-1">Cover</div>
                 <div class="col-md-3">Title</div>
                 <div class="col">Unit Price</div>
                 <div class="col">Quantity</div>
+                <div class="col">Apply Coupon</div>
                 <div class="col">Discount</div>
                 <div class="col">Total Price</div>
-                <div class="col">Option</div>
                 <div class="col">Remove</div>
             </div>
             <cfloop collection="#session.cart#" item="key">
@@ -53,8 +53,8 @@
                         </div>
                         <div class="col">
                             <div class="row align-items-baseline text-center ">
-                                <div class="col-12 col-sm-4 col-md-2">Rs #book.Price#</div>
-                                <div class="col-12 col-sm-4 col-md-2 d-flex justify-content-center" data-bookid=#book.id#>
+                                <div class="col-12  col-md-2">Rs #book.Price#</div>
+                                <div class="col-12  col-md-2 d-flex justify-content-center" data-bookid=#book.id#>
                                     <btn class="btn btn-danger btn-sm mr-2  font-weight-bold" onClick="modifyItem(#book.id#,'decrementquantity')">
                                     -
                                     </btn>
@@ -63,14 +63,21 @@
                                     +
                                     </btn>
                                 </div>
-                                <div class="col-12 col-sm-4 col-md-2">Discount</div>
-                                <div class="col-12 col-sm-4 col-md-2" >
+                                <div class="col-12  col-md-2"><button class="btn btn-info btn-sm" onClick="fetchCoupon(#book.Category_Type#,#book.id#)"  data-toggle="modal" data-target="##exampleModal">Apply Coupon</button></div>
+                                <div class="col-12  col-md-2" id="discount-#book.id#">
+                                    <cfif structKeyExists(session.cart[book.id], "appliedCoupon")>
+                                        <cfoutput>session.cart[book.id].appliedCoupon.discount</cfoutput>
+                                    <cfelse>
+                                        <cfoutput>0</cfoutput>
+                                    </cfif>
+                                </div>
+                                <div class="col-12  col-md-2" >
                                    Rs <span id="totalprice-#book.id#">#session.cart[book.id].totalprice#</span>
                                 </div>
-                                <div class="col-12 col-sm-4 col-md-2">Delete</div>
-                                <btn class="col-12 col-sm-4 col-md-2 removebtn btn btn-sm mw-fit btn-danger ml-auto mr-auto" onClick="removeItem(#book.id#)"  data-id=#book.id#>
+                                
+                                <button class="col-12  col-md-2 removebtn btn btn-sm mw-fit btn-danger ml-auto mr-auto" onClick="removeItem(#book.id#)"  data-id=#book.id#>
                                     Remove
-                                </btn>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -88,6 +95,33 @@
             <p class="font-weight-bold text-dark text-center mt-10 h1" >Your cart is empty</p>
         </cfif>
     </div>
+
+
+<!---     ----------------------------modal------------------------- --->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Apply Coupon</h5>
+                    <button type="button" class="close" id="closebtn" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="couponform">
+                    <div class="modal-body d-flex flex-column">
+                        <select class="w-10 bg-white border rounded-sm h-2 mx-auto" id="coupon">
+                        </select>
+                        <small class="text-danger mt-2 mx-auto d-none" id="couponError"></small>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-center">
+                        <button type="button" class="btn btn-secondary" onClick="removeCoupon()">Remove</button>
+                        <button type="submit" class="btn btn-primary">Apply</button>
+                    </div>
+                </form>
+                </div>
+            </div>
+        </div>
+
     </cfoutput>
 
 
@@ -171,33 +205,113 @@
                 }
             })
         }
+    // --------------------------coupon----------------------
 
+    let fetchCoupon=(catId,bookId)=>{
+        let modal=document.getElementById("exampleModal");
+        let couponSelect=document.getElementById("coupon");
+        couponSelect.setAttribute("data-id",bookId)
+        while(couponSelect.firstChild){
+            couponSelect.removeChild(couponSelect.firstChild)
+        }
+        $.ajax({
+            type:"GET",
+            url:"../components/bookservice.cfc",
+            data:{
+                method:"fetchcoupons",
+                catid:catId
+            },
+            success:(res)=>{
+                if(res.RESULT){
+                    res.DATA.forEach(coupon=>{
+                        let option=document.createElement("option");
+                        option.innerHTML=coupon.Name;
+                        option.setAttribute("value",coupon.id);
+                        couponSelect.appendChild(option);
+                    })
+                }
+            },
+            error:(res)=>{
+                console.log(res)
+            }
+        })
+    }
 
-        // let checkoutcart=()=>{
-        //     $.ajax({
-        //         type:"GET",
-        //         url:"../components/bookservice.cfc",
-        //         dataType:'json',
-        //         data:{
-        //             method:"checkoutcart",
-        //         },
-        //         success:(res)=>{
-        //             let result=JSON.parse(res);
-        //             if(result.RESULT){
-        //                 let labels=document.getElementById('labels');
-        //                 let cartItems=document.querySelectorAll('.cartitem');
-        //                 let cartTotal=document.getElementById("carttotal");
-        //                 let cartActions=document.getElementById("cartActions");
-        //                 labels.remove();
-        //                 cartActions.remove();
-        //                 cartItems.forEach(item=>{
-        //                     item.remove();
-        //                 })
-        //                 window.location.href="http://bookshop.local/user/myorders.cfm"
-        //             }
-        //         }
-        //     })
-        // }
+// --------------------------apply------------------------
+    let couponform=document.getElementById("couponform");
+    couponform.addEventListener("submit",(e)=>{
+        e.preventDefault();
+        let couponSelect=document.getElementById("coupon");
+        let closeBtn=document.getElementById("closebtn");
+        let couponErrorEl=document.getElementById("couponError");
+
+        let bookId=couponSelect.dataset.id;
+        $.ajax({
+            type:"GET",
+            url:"../components/bookservice.cfc",
+            data:{
+                method:"applycoupon",
+                bookid:bookId,
+                couponid:couponSelect.value
+            },
+            success:(res)=>{
+                if(res.RESULT){
+                    couponErrorEl.classList.add("d-none")
+                    let totalPriceEl=document.getElementById('totalprice-'+bookId);
+                    let cartTotalEl=document.getElementById("carttotal");
+                    let discountEl=document.getElementById("discount-"+bookId);
+                    cartTotalEl.innerHTML=res.CARTTOTAL;
+                    totalPriceEl.innerHTML=res.REQBOOK.TOTALPRICE;
+                    discountEl.innerHTML=res.DISCOUNT;
+                    closeBtn.click();
+                }else if(!res.RESULT){
+                    couponErrorEl.classList.remove("d-none");
+                    couponErrorEl.innerHTML=res.MSG
+                }
+            },
+            error:(res)=>{
+                console.log(res);
+            }
+        })
+        
+    })
+
+    // -----------------------remove coupon --------------
+    let removeCoupon=()=>{
+        let couponSelect=document.getElementById("coupon");
+        let bookId=couponSelect.getAttribute("data-id");
+        let closeBtn=document.getElementById("closebtn");
+        let couponErrorEl=document.getElementById("couponError");
+
+        $.ajax({
+            type:"GET",
+            url:"../components/bookservice.cfc",
+            data:{
+                method:"removecoupon",
+                bookid:bookId
+            },
+            success:(res)=>{
+                if(res.RESULT){
+                    couponErrorEl.classList.add("d-none")
+                    let totalPriceEl=document.getElementById('totalprice-'+bookId);
+                    let cartTotalEl=document.getElementById("carttotal");
+                    let discountEl=document.getElementById("discount-"+bookId);
+
+                    cartTotalEl.innerHTML=res.CARTTOTAL;
+                    totalPriceEl.innerHTML=res.REQBOOK.TOTALPRICE;
+                    discountEl.innerHTML=res.DISCOUNT;
+                    closeBtn.click();
+                }else if(!res.RESULT){
+                    couponErrorEl.classList.remove("d-none")
+                    couponErrorEl.innerHTML=res.MSG
+                }
+                
+            },
+            error:(res)=>{
+                console.log(res);
+            }
+        })
+    }
     </script>
 </body>
 </html>
